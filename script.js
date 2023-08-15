@@ -1,24 +1,39 @@
-const grid = []
+let grid = []
 const inputContainer = document.querySelector('.input__container')
 const startButton = document.querySelector('.container__button')
 const sizeInput = document.querySelector('.container__input')
 const gridBox = document.querySelector('.grid__game')
 const gridContainer = document.querySelector('.grid')
+const playerTurn = document.querySelector('.main__playerTurn')
+const winningContainer = document.querySelector('.winning-message')
+const winningText = document.querySelector('.winning-message-text')
+const restartButton = document.querySelector('.restart__button')
 const players = ['X', 'O']
 let currentPlayer = 0
-const html = document.querySelector('html')
+let sizeGrid = 0
 
 startButton.addEventListener('click', () => {
-  const size = parseInt(sizeInput.value)
-  if (!isNaN(size)) {
-    startGame(size)
+  sizeGrid = parseInt(sizeInput.value)
+  sizeInput.value = ''
+  if (!isNaN(sizeGrid)) {
+    startGame(sizeGrid)
   }
 })
 
+restartButton.addEventListener('click', () => {
+  currentPlayer = 0
+  sizeGrid = 0
+  grid = []
+  gridContainer.innerHTML = ''
+  gridBox.style.display = 'none'
+  winningContainer.style.display = 'none'
+  inputContainer.style.display = 'flex'
+})
+
 const startGame = (sizeGrid) => {
-  console.log(sizeGrid)
   inputContainer.style.display = 'none'
   gridBox.style.display = 'block'
+  playerTurn.textContent = players[currentPlayer]
   createGrid(sizeGrid)
 }
 
@@ -41,8 +56,8 @@ const createGrid = (sizeGrid) => {
     }
     grid.push(rowArray)
   }
-  gridContainer.style.gridTemplateColumns = `repeat(${sizeGrid} , ${fontSize}rem)`
-  gridContainer.style.gridTemplateRows = `repeat(${sizeGrid} , ${fontSize}rem)`
+  gridContainer.style.gridTemplateColumns = `repeat(${sizeGrid} , minmax(0, ${fontSize}rem))`
+  gridContainer.style.gridTemplateRows = `repeat(${sizeGrid} , minmax(0, ${fontSize}rem))`
 }
 
 const onClickBox = (box) => {
@@ -52,7 +67,66 @@ const onClickBox = (box) => {
       const col = Number(box.dataset.col)
       grid[row][col] = players[currentPlayer]
       box.textContent = players[currentPlayer]
+      checkWinner(row, col)
       currentPlayer = (currentPlayer + 1) % 2
+      playerTurn.textContent = players[currentPlayer]
     }
   })
+}
+
+const checkWinner = (row, col) => {
+  //check for row
+  let win = false
+  if (grid[row].every((element) => element === players[currentPlayer]) === true)
+    win = true
+  if (win === true) displayWinner()
+
+  //check for column
+  for (let i = 0; i < sizeGrid; i++) {
+    if (grid[i][col] === players[currentPlayer]) {
+      win = true
+    } else {
+      win = false
+      break
+    }
+  }
+  if (win === true) displayWinner()
+
+  //check for diagonals
+  win = checkDiagonal(row, col)
+  if (win === true) displayWinner()
+}
+
+const checkDiagonal = (row, col) => {
+  let win = false
+  //check top-right to bottom-left
+  if (sizeGrid - 1 === row + col) {
+    for (let i = sizeGrid - 1, j = 0; j < sizeGrid; i--, j++) {
+      if (grid[i][j] === players[currentPlayer]) {
+        win = true
+      } else {
+        win = false
+        break
+      }
+    }
+  }
+  if (win === true) return true
+
+  //check top-left to bottom-right
+  if (row === col) {
+    for (let i = 0, j = 0; i < sizeGrid; i++, j++) {
+      if (grid[i][j] === players[currentPlayer]) {
+        win = true
+      } else {
+        win = false
+        break
+      }
+    }
+  }
+  return win
+}
+
+const displayWinner = () => {
+  winningContainer.style.display = 'flex'
+  winningText.textContent = `${players[currentPlayer]} WINS!`
 }
