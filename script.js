@@ -11,6 +11,7 @@ const restartButton = document.querySelector('.restart__button')
 const players = ['X', 'O']
 let currentPlayer = 0
 let sizeGrid = 0
+let totalTurns = 0
 
 startButton.addEventListener('click', () => {
   sizeGrid = parseInt(sizeInput.value)
@@ -20,7 +21,14 @@ startButton.addEventListener('click', () => {
   }
 })
 
-restartButton.addEventListener('click', () => {
+const startGame = (sizeGrid) => {
+  inputContainer.style.display = 'none'
+  gridBox.style.display = 'block'
+  playerTurn.textContent = players[currentPlayer]
+  createGrid(sizeGrid)
+}
+
+const restartGame = () => {
   currentPlayer = 0
   sizeGrid = 0
   grid = []
@@ -28,14 +36,9 @@ restartButton.addEventListener('click', () => {
   gridBox.style.display = 'none'
   winningContainer.style.display = 'none'
   inputContainer.style.display = 'flex'
-})
-
-const startGame = (sizeGrid) => {
-  inputContainer.style.display = 'none'
-  gridBox.style.display = 'block'
-  playerTurn.textContent = players[currentPlayer]
-  createGrid(sizeGrid)
 }
+
+restartButton.addEventListener('click', restartGame)
 
 const createGrid = (sizeGrid) => {
   const fontSize = 8 * (3 / sizeGrid)
@@ -75,6 +78,7 @@ const onClickBox = (box) => {
 }
 
 const checkWinner = (row, col) => {
+  totalTurns += 1
   //check for row
   let win = false
   if (grid[row].every((element) => element === players[currentPlayer]) === true)
@@ -95,6 +99,10 @@ const checkWinner = (row, col) => {
   //check for diagonals
   win = checkDiagonal(row, col)
   if (win === true) displayWinner()
+
+  if (totalTurns === sizeGrid * sizeGrid) {
+    displayDraw()
+  }
 }
 
 const checkDiagonal = (row, col) => {
@@ -129,4 +137,9 @@ const checkDiagonal = (row, col) => {
 const displayWinner = () => {
   winningContainer.style.display = 'flex'
   winningText.textContent = `${players[currentPlayer]} WINS!`
+}
+
+const displayDraw = () => {
+  winningContainer.style.display = 'flex'
+  winningText.textContent = `DRAW!`
 }
