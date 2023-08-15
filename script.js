@@ -16,7 +16,7 @@ let totalTurns = 0
 startButton.addEventListener('click', () => {
   sizeGrid = parseInt(sizeInput.value)
   sizeInput.value = ''
-  if (!isNaN(sizeGrid)) {
+  if (!isNaN(sizeGrid) && sizeGrid > 2) {
     startGame(sizeGrid)
   }
 })
