@@ -36,7 +36,7 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
+
 }
 
 .container__label {
@@ -68,9 +68,7 @@ body {
 
 .container__button:hover {
     background-color: var(--yellow);
-    /* Button background color on hover */
     transform: scale(1.05);
-    /* Slightly scale up on hover */
 }
 
 
@@ -82,7 +80,7 @@ body {
     font-family: 'Carter One', cursive;
     color: var(--light-gray);
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .grid__game {
@@ -114,8 +112,40 @@ body {
     font-family: 'Carter One', cursive;
 }
 
-
-
 .grid__box:hover {
     cursor: pointer;
+}
+
+.winning-message {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: #fff;
+    flex-direction: column;
+    font-family: 'Carter One', cursive;
+    display: none;
+}
+
+.restart__button {
+    padding: 10px 20px;
+    background-color: var(--turquoise);
+    color: var(--dark-gray);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Carter One', cursive;
+}
+
+.restart__button:hover {
+    background-color: var(--yellow);
+    transform: scale(1.05);
 }

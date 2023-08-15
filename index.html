@@ -14,13 +14,20 @@
           <label for="gridSize" class="container__label"
             >Enter Grid Size:</label
           >
-          <input type="number" id="gridSize" class="container__input" />
+          <input type="number" id="gridSize" class="container__input" min="3" />
           <button id="startButton" class="container__button">Start Game</button>
         </div>
 
         <div class="grid__game">
-          <div class="main__heading2">Player Turn:<span></span></div>
+          <div class="main__heading2">
+            Player Turn: <span class="main__playerTurn"></span>
+          </div>
           <div class="grid" data-id="grid"></div>
+        </div>
+
+        <div class="winning-message">
+          <div class="winning-message-text"></div>
+          <button class="restart__button">Restart</button>
         </div>
       </main>
     </div>
